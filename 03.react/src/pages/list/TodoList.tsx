@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import RedArrowIcon from '@/assets/RedArrowIcon';
@@ -8,6 +8,8 @@ import MagnifyingGlass from '@/assets/MagnifyingGlass.svg';
 const TodoList = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
   const [filteredList, setFilteredList] = useState<TodoItem[]>([...todoList]);
+  const [searchInput, setSearchInput] = useState('');
+  // const [searchResult, setSearchResult] = useState('');
 
   const getTodoList = async () => {
     try {
@@ -32,8 +34,18 @@ const TodoList = () => {
       case 'uncompleted':
         setFilteredList(todoList.filter((todo) => !todo.done));
         return;
+      default:
+        setFilteredList(todoList);
+        return;
     }
   };
+
+  const searchTodo = useCallback(
+    (value: string) => {
+      setSearchInput(value.split(' ').join('').toLowerCase());
+    },
+    [searchInput]
+  );
 
   const patchTodoList = async (_id: number, done: boolean) => {
     try {
@@ -61,6 +73,13 @@ const TodoList = () => {
     getTodoList();
   }, []);
 
+  useEffect(() => {
+    const searchedList = todoList.filter((item) =>
+      item.title.split(' ').join('').toLowerCase().includes(searchInput)
+    );
+    setFilteredList(searchedList);
+  }, [searchInput]);
+
   return (
     <TodoListContainer>
       <FilterList>
@@ -84,8 +103,11 @@ const TodoList = () => {
         </li>
       </FilterList>
       <Searchform>
-        <input type="text" placeholder="검색어를 입력하세요" />
-        <button>Search</button>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          onChange={(e) => searchTodo(e.target.value)}
+        />
       </Searchform>
       {!filteredList ? (
         <p>투두가 없습니다</p>
@@ -168,21 +190,6 @@ const Searchform = styled.form`
     border: none;
     border-radius: 10px;
     text-indent: 15px;
-  }
-
-  button {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-70%);
-    padding: 5px;
-    border: none;
-    background-color: white;
-    cursor: pointer;
-  }
-
-  button:hover {
-    color: blue;
   }
 `;
 
