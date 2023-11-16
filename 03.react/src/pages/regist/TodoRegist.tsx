@@ -66,6 +66,10 @@ const Content = styled.div`
 
 const Form = styled.form`
   height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  gap: 10px;
 `;
 
 const FieldSet = styled.fieldset`
@@ -89,7 +93,7 @@ const FieldSet = styled.fieldset`
 `;
 
 const Input = styled.input`
-  width: 360px;
+  width: 100%;
   height: 52px;
   border-radius: 10px;
   border: 0;
@@ -99,7 +103,7 @@ const Input = styled.input`
 
 const Textarea = styled.textarea`
   padding: 15px;
-  width: 360px;
+  width: 100%;
   height: 100%;
   border: 0;
   border-radius: 10px;
@@ -109,13 +113,8 @@ const Textarea = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
-  position: absolute;
-  width: 360px;
+  width: 100%;
   height: 50px;
-  left: 50%;
-  right: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
   border-radius: 10px;
   border: 0;
   font-size: 30px;
