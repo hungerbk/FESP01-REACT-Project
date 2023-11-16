@@ -1,7 +1,58 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+const TodoRegist = () => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await axios.post('http://localhost:33088/api/todolist', { title, content });
+      setShowModal(true);
+      setTimeout(() => {
+        setShowModal(false);
+        navigate('/');
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      alert('등록에 실패하였습니다.');
+    }
+  };
+
+  return (
+    <Content>
+      <Form onSubmit={handleSubmit}>
+        <FieldSet>
+          <Input
+            type="text"
+            name="title"
+            placeholder="제목을 입력해주세요."
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Textarea
+            name="content"
+            placeholder="내용을 입력해주세요."
+            required
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </FieldSet>
+        <SubmitButton type="submit">등록 완료</SubmitButton>
+      </Form>
+      {showModal && <Modal>할일이 등록되었습니다!</Modal>}
+    </Content>
+  );
+};
+
+export default TodoRegist;
 
 // Styled Components
 const Content = styled.div`
@@ -18,7 +69,7 @@ const Form = styled.form`
 `;
 
 const FieldSet = styled.fieldset`
-display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0;
@@ -29,16 +80,16 @@ display: flex;
   font-size: inherit;
   font-weight: inherit;
 
-  & > ::placeholder{
-  color: #555555;
-  font-size: 18px;
-  font-weight: 900;
-  text-align: center;
+  & > ::placeholder {
+    color: #555555;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
   }
-`
+`;
 
 const Input = styled.input`
-   width: 360px;
+  width: 360px;
   height: 52px;
   border-radius: 10px;
   border: 0;
@@ -74,7 +125,7 @@ const SubmitButton = styled.button`
 `;
 
 const Modal = styled.div`
-    display: none;
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -85,54 +136,3 @@ const Modal = styled.div`
   border-radius: 5px;
   z-index: 9999;
 `;
-
-const TodoRegist = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await axios.post("http://localhost:33088/api/todolist", { title, content });
-      setShowModal(true);
-      setTimeout(() => {
-        setShowModal(false);
-        navigate("/");
-      }, 500);
-    } catch (error) {
-      console.error(error);
-      alert("등록에 실패하였습니다.");
-    }
-  };
-
-  return (
-    <Content>
-      <Form onSubmit={handleSubmit}>
-        <FieldSet>
-        <Input
-          type="text"
-          name="title"
-          placeholder="제목을 입력해주세요."
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Textarea
-          name="content"
-          placeholder="내용을 입력해주세요."
-          required
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        </FieldSet>
-        <SubmitButton type="submit">등록 완료</SubmitButton>
-      </Form>
-      {showModal && <Modal>할일이 등록되었습니다!</Modal>}
-    </Content>
-  );
-};
-
-export default TodoRegist;
