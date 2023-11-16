@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import RedArrowIcon from '@/assets/RedArrowIcon';
+import MagnifyingGlass from '@/assets/MagnifyingGlass.svg';
 
 const TodoList = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
@@ -64,6 +65,9 @@ const TodoList = () => {
     <TodoListContainer>
       <FilterList>
         <li>
+          <button type="button" className="searchButton"></button>
+        </li>
+        <li>
           <button onClick={(e) => filterTodoList(e)} type="button" data-filter="all">
             전체보기
           </button>
@@ -79,6 +83,10 @@ const TodoList = () => {
           </button>
         </li>
       </FilterList>
+      <Searchform>
+        <input type="text" placeholder="검색어를 입력하세요" />
+        <button>Search</button>
+      </Searchform>
       {!filteredList ? (
         <p>투두가 없습니다</p>
       ) : (
@@ -123,16 +131,58 @@ const FilterList = styled.ul`
     width: 60px;
     height: 30px;
     padding: 5px;
-    border: none;
+    border: 1px solid white;
     border-radius: 10px;
     background-color: white;
     cursor: pointer;
 
+    &.searchButton {
+      width: 30px;
+      padding: 5px;
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      border-radius: 50%;
+      background: white url(${MagnifyingGlass}) no-repeat 1px 1px;
+      background-size: contain;
+    }
+
+    &.searchButton:hover {
+      stroke: white;
+    }
+
     &:hover {
       color: white;
       background-color: #555555;
-      border: 1px solid white;
     }
+  }
+`;
+
+const Searchform = styled.form`
+  /* display: none; */
+  position: relative;
+  input {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 10px;
+    text-indent: 15px;
+  }
+
+  button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-70%);
+    padding: 5px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    color: blue;
   }
 `;
 
