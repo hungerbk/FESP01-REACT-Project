@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import RedArrowIcon from '@/assets/RedArrowIcon';
 import MagnifyingGlass from '@/assets/MagnifyingGlass.svg';
+import Trash from '@/assets/Trash.svg';
 
 const TodoList = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
@@ -123,6 +124,7 @@ const TodoList = () => {
               {todoItem.done ? <RedArrowIcon /> : null}
             </div>
             <Link to={`/info?_id=${todoItem._id}`}>{todoItem.title}</Link>
+            <button type="button" className="deleteButton"></button>
           </TodoItem>
         ))}
       </TodoItemList>
@@ -244,6 +246,7 @@ const TodoItem = styled.li`
     color: black;
     display: flex;
     justify-content: center;
+    background-color: blue;
   }
 
   &.done > a {
@@ -255,6 +258,13 @@ const TodoItem = styled.li`
   &.done {
     background-color: #555555;
     border: 1px solid white;
+  }
+
+  button.deleteButton {
+    width: 30px;
+    height: 30px;
+    background: white ${Trash} no-repeat;
+    cursor: pointer;
   }
 `;
 
