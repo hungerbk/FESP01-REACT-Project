@@ -15,7 +15,6 @@ const TodoList = () => {
     try {
       const response = await axios.get<TodoListResponse>('http://localhost:33088/api/todolist');
       setTodoList(response.data.items);
-      setFilteredList(response.data.items);
     } catch (err) {
       console.error(err);
     }
@@ -128,7 +127,8 @@ const TodoList = () => {
           ))}
         </TodoItemList>
       )}
-      <RegistButton to={'/regist'}>등록</RegistButton>
+
+      <RegistButton to={'/regist'}>할 일 추가하기</RegistButton>
     </TodoListContainer>
   );
 };
@@ -137,9 +137,13 @@ export default TodoList;
 
 const TodoListContainer = styled.div`
   position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  gap: 10px;
   width: 100%;
   padding: 10px;
-  height: 715px;
+  height: 500px;
   background-color: #555555;
   border-radius: 10px;
 `;
@@ -150,7 +154,6 @@ const FilterList = styled.ul`
   justify-content: flex-end;
   gap: 20px;
   list-style: none;
-  margin-bottom: 10px;
 
   button {
     display: block;
@@ -192,7 +195,6 @@ const Searchform = styled.form`
   input {
     width: 100%;
     height: 30px;
-    margin-bottom: 10px;
     border: none;
     border-radius: 10px;
     text-indent: 15px;
@@ -203,7 +205,7 @@ const TodoItemList = styled.ul`
   margin: 0;
   padding: 0;
   overflow: auto;
-  height: 90%;
+  height: 68%;
   border-radius: 5px;
   margin-top: 5px;
 `;
@@ -258,13 +260,13 @@ const TodoItem = styled.li`
 `;
 
 const RegistButton = styled(Link)`
-  position: absolute;
+  /* position: absolute;
   left: 50%;
   right: 50%;
   bottom: 10px;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
 
-  width: 360px;
+  width: 100%;
   padding: 10px 0;
   border-radius: 10px;
   border: 0;
