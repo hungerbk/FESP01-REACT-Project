@@ -9,7 +9,7 @@ const TodoList = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
   const [filteredList, setFilteredList] = useState<TodoItem[]>([...todoList]);
   const [searchInput, setSearchInput] = useState('');
-  // const [searchResult, setSearchResult] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
 
   const getTodoList = async () => {
     try {
@@ -69,6 +69,10 @@ const TodoList = () => {
     }
   };
 
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
   useEffect(() => {
     getTodoList();
   }, []);
@@ -84,7 +88,7 @@ const TodoList = () => {
     <TodoListContainer>
       <FilterList>
         <li>
-          <button type="button" className="searchButton"></button>
+          <button type="button" className="searchButton" onClick={() => toggleSearch()}></button>
         </li>
         <li>
           <button onClick={(e) => filterTodoList(e)} type="button" data-filter="all">
@@ -102,7 +106,7 @@ const TodoList = () => {
           </button>
         </li>
       </FilterList>
-      <Searchform>
+      <Searchform className={showSearch ? 'show' : ''}>
         <input
           type="text"
           placeholder="검색어를 입력하세요"
@@ -181,8 +185,10 @@ const FilterList = styled.ul`
 `;
 
 const Searchform = styled.form`
-  /* display: none; */
-  position: relative;
+  display: none;
+  &.show {
+    display: block;
+  }
   input {
     width: 100%;
     height: 30px;
