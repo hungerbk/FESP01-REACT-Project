@@ -45,7 +45,7 @@ const TodoRegist = () => {
             onChange={(e) => setContent(e.target.value)}
           />
         </FieldSet>
-        <SubmitButton type="submit">등록 완료</SubmitButton>
+        <SubmitButton type="submit">등록하기</SubmitButton>
       </Form>
       {showModal && <Modal>할일이 등록되었습니다!</Modal>}
     </Content>
