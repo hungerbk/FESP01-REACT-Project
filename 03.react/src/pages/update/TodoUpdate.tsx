@@ -71,7 +71,7 @@ const Content = styled.div`
   position: relative;
   width: 100%;
   padding: 10px;
-  height: 715px;
+  height: 500px;
   background-color: #555555;
   border-radius: 10px;
 `;

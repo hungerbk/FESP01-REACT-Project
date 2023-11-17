@@ -71,7 +71,7 @@ const DetailContainer = styled.div`
   position: relative;
   width: 100%;
   padding: 10px;
-  height: 715px;
+  height: 500px;
   background-color: #555555;
   border-radius: 10px;
   display: flex;
@@ -99,7 +99,7 @@ const DetailMain = styled.section`
   background-color: white;
   position: relative;
   flex: 1;
-  height: 80%;
+  height: 75%;
   padding: 10px;
   border-radius: 10px;
 
