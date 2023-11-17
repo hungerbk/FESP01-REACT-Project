@@ -18,15 +18,10 @@ export default App;
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
+  flex-flow: column nowrap;
   justify-content: space-between;
+  align-items: center;
   width: 386px;
   height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  right: 50vh;
+  margin: 0 auto;
 `;
