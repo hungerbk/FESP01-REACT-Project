@@ -35,21 +35,22 @@ const Header = () => {
 export default Header;
 
 const HeaderTitle = styled.header`
+  padding: 20px 0;
   & a {
     margin-top: 80px;
-    color: black
+    color: black;
     font-weight: 900;
     font-size: 68px;
     cursor: pointer;
 
-    &:visited{
-      color: black
+    &:visited {
+      color: black;
     }
   }
 
   & h2 {
     text-align: center;
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 400;
   }
 `;
