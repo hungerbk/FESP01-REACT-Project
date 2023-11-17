@@ -116,11 +116,16 @@ const SubmitButton = styled.button`
   width: 100%;
   height: 50px;
   border-radius: 10px;
-  border: 0;
+  border: none;
   font-size: 30px;
   font-weight: bold;
   color: #555555;
   cursor: pointer;
+  &:hover {
+    color: white;
+    background-color: #555555;
+    border: 1px solid white;
+  }
 `;
 
 const Modal = styled.div`
