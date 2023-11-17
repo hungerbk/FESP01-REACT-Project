@@ -61,6 +61,19 @@ const TodoList = () => {
     setShowSearch(!showSearch);
   };
 
+  const deleteTodoItem = async (_id: number) => {
+    if (confirm('삭제하시겠습니까?')) {
+      const response = await axios.delete<TodoResponse>(
+        `http://localhost:33088/api/todolist/${_id}`
+      );
+      if (response.data.ok) {
+        getTodoList();
+      } else {
+        alert('삭제 실패했습니다.');
+      }
+    }
+  };
+
   useEffect(() => {
     getTodoList();
   }, []);
@@ -124,7 +137,11 @@ const TodoList = () => {
               {todoItem.done ? <RedArrowIcon /> : null}
             </div>
             <Link to={`/info?_id=${todoItem._id}`}>{todoItem.title}</Link>
-            <button type="button" className="deleteButton"></button>
+            <button
+              type="button"
+              className="deleteButton"
+              onClick={() => deleteTodoItem(todoItem._id)}
+            ></button>
           </TodoItem>
         ))}
       </TodoItemList>
@@ -246,7 +263,6 @@ const TodoItem = styled.li`
     color: black;
     display: flex;
     justify-content: center;
-    background-color: blue;
   }
 
   &.done > a {
@@ -263,8 +279,14 @@ const TodoItem = styled.li`
   button.deleteButton {
     width: 30px;
     height: 30px;
-    background: white ${Trash} no-repeat;
+    border: none;
+    background: transparent url(${Trash}) no-repeat 0 4px;
+    background-size: contain;
     cursor: pointer;
+  }
+
+  &.done > button.deleteButton {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
   }
 `;
 
