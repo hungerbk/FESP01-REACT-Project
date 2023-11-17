@@ -7,7 +7,8 @@ import MagnifyingGlass from '@/assets/MagnifyingGlass.svg';
 
 const TodoList = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
-  const [filteredList, setFilteredList] = useState<TodoItem[]>([...todoList]);
+  const [filteredList, setFilteredList] = useState<TodoItem[]>();
+  const [filterKeyword, setFilterKeyword] = useState('all');
   const [searchInput, setSearchInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
 
@@ -15,6 +16,7 @@ const TodoList = () => {
     try {
       const response = await axios.get<TodoListResponse>('http://localhost:33088/api/todolist');
       setTodoList(response.data.items);
+      setFilteredList(response.data.items);
     } catch (err) {
       console.error(err);
     }
@@ -22,21 +24,7 @@ const TodoList = () => {
 
   const filterTodoList = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const filterId = e.currentTarget.dataset.filter;
-    switch (filterId) {
-      case 'all':
-        setFilteredList(todoList);
-        return;
-      case 'done':
-        setFilteredList(todoList.filter((todo) => todo.done));
-        return;
-      case 'uncompleted':
-        setFilteredList(todoList.filter((todo) => !todo.done));
-        return;
-      default:
-        setFilteredList(todoList);
-        return;
-    }
+    setFilterKeyword(e.currentTarget.dataset.filter!);
   };
 
   const searchTodo = useCallback(
@@ -83,6 +71,20 @@ const TodoList = () => {
     setFilteredList(searchedList);
   }, [searchInput]);
 
+  useEffect(() => {
+    switch (filterKeyword) {
+      case 'all':
+        setFilteredList(todoList);
+        return;
+      case 'done':
+        setFilteredList(todoList.filter((todo) => todo.done));
+        return;
+      case 'uncompleted':
+        setFilteredList(todoList.filter((todo) => !todo.done));
+        return;
+    }
+  }, [filterKeyword, todoList]);
+
   return (
     <TodoListContainer>
       <FilterList>
@@ -112,21 +114,18 @@ const TodoList = () => {
           onChange={(e) => searchTodo(e.target.value)}
         />
       </Searchform>
-      {!filteredList ? (
-        <p>투두가 없습니다</p>
-      ) : (
-        <TodoItemList>
-          {filteredList.map((todoItem) => (
-            <TodoItem key={todoItem._id} className={todoItem.done ? 'done' : ''}>
-              <div onClick={() => toggleCheckbox(todoItem._id, todoItem.done)}>
-                <input type="checkbox" id="checkbox" className={todoItem.done ? 'done' : ''} />
-                {todoItem.done ? <RedArrowIcon /> : null}
-              </div>
-              <Link to={`/info?_id=${todoItem._id}`}>{todoItem.title}</Link>
-            </TodoItem>
-          ))}
-        </TodoItemList>
-      )}
+
+      <TodoItemList>
+        {filteredList?.map((todoItem) => (
+          <TodoItem key={todoItem._id} className={todoItem.done ? 'done' : ''}>
+            <div onClick={() => toggleCheckbox(todoItem._id, todoItem.done)}>
+              <input type="checkbox" id="checkbox" className={todoItem.done ? 'done' : ''} />
+              {todoItem.done ? <RedArrowIcon /> : null}
+            </div>
+            <Link to={`/info?_id=${todoItem._id}`}>{todoItem.title}</Link>
+          </TodoItem>
+        ))}
+      </TodoItemList>
 
       <RegistButton to={'/regist'}>할 일 추가하기</RegistButton>
     </TodoListContainer>
@@ -260,12 +259,6 @@ const TodoItem = styled.li`
 `;
 
 const RegistButton = styled(Link)`
-  /* position: absolute;
-  left: 50%;
-  right: 50%;
-  bottom: 10px;
-  transform: translateX(-50%); */
-
   width: 100%;
   padding: 10px 0;
   border-radius: 10px;
